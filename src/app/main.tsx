@@ -1,8 +1,9 @@
-import * as JSX from "./JSX.js";
+import { Component } from "./Component.js";
+import "./Components/HelloWorld.js";
 
 main();
 
 function main() {
   const appElement = document.getElementById("app");
-  appElement?.appendChild(<div>Hello World!</div>);
+  appElement?.appendChild(<hello-world><span slot="name">World</span></hello-world>);
 }
