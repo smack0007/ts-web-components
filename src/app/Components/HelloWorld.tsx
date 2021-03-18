@@ -1,10 +1,14 @@
-import { Component, ComponentBase, html } from "../ComponentFramework.js";
+import { Component, ComponentBase, ComponentChild, html } from "../ComponentFramework.js";
 import "./Counter.js";
+import { Counter } from "./Counter.js";
 
 @Component("app-hello-world")
 export class HelloWorld extends ComponentBase {   
     private _clickCount: number = 0;
     
+    @ComponentChild("app-counter")
+    private _counter: Counter | null = null;
+
     protected renderElement(): HTMLElement {
         console.info("Render hello-world");
         return (
@@ -29,7 +33,9 @@ export class HelloWorld extends ComponentBase {
 
     private onClick(): void {
         console.info("Clicked!");
-        this._clickCount++;
-        this.render();
+        
+        if (this._counter !== null) {
+            this._counter.count++;
+        }
     }
 }

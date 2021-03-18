@@ -45,6 +45,22 @@ export function Component(name: string) {
     }
 }
 
+const componentChildMapKey = "__children";
+type ComponentChildMap = { [key: string]: string };
+
+export function ComponentChild(selector: string) {
+    return function (target: unknown, propertyKey: string): void {
+        let childMap: ComponentChildMap = (target as any)[componentChildMapKey];
+
+        if (childMap === undefined) {
+            childMap = {};
+            (target as any)[componentChildMapKey] = childMap;
+        }
+
+        childMap[propertyKey] = selector;
+    }
+}
+
 export abstract class ComponentBase extends HTMLElement {
     private _shadow: ShadowRoot;
     private _styleElement: HTMLStyleElement;
@@ -60,17 +76,18 @@ export abstract class ComponentBase extends HTMLElement {
         
         this._styleElement = document.createElement("style");
         this._shadow.appendChild(this._styleElement);
-
-        this.render();
     }
 
     private connectedCallback(): void {
-        this.render();    
+        this.render();
+        this.onInit();
     }
 
     // private disconnectedCallback(): void {
-        
     // }
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    protected onInit(): void {}
 
     protected render(): void {
         this._styleElement.innerHTML = this.renderElementStyle();
@@ -81,6 +98,14 @@ export abstract class ComponentBase extends HTMLElement {
 
         this._element = this.renderElement();
         this._shadow.appendChild(this._element);
+
+        const childMap = (this as any)[componentChildMapKey];
+
+        if (childMap !== undefined) {
+            for (const property of Object.keys(childMap)) {
+                (this as any)[property] = this._element.querySelector(childMap[property]);
+            }
+        }
     }
 
     protected abstract renderElementStyle(): string;
