@@ -1,10 +1,13 @@
-import { Component, ComponentBase, html } from "../ComponentFramework.js";
+import { Component, ComponentBase, ComponentChild, html } from "../ComponentFramework.js";
 
 @Component("app-counter")
 export class Counter extends ComponentBase {
     public static get observedAttributes(): Array<string> {
         return ["count"];
     }
+
+    @ComponentChild(".count")
+    private _countElement: HTMLElement | null = null;
 
     public get count(): number {
         const temp = this.getAttribute("count");
@@ -20,7 +23,7 @@ export class Counter extends ComponentBase {
 
     protected renderElement(): HTMLElement {
         return (
-            <div>The count is {this.count}</div>
+            <div>The count is <span class="count">{this.count}</span></div>
         );
     }
 
@@ -34,6 +37,9 @@ export class Counter extends ComponentBase {
 
     private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
         console.info("attributeChangedCallback", name, oldValue, newValue);
-        this.render();
+        
+        if (this._countElement !== null) {
+            this._countElement.innerText = this.count.toString();
+        }
     }
 }

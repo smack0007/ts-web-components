@@ -10,7 +10,6 @@ export class HelloWorld extends ComponentBase {
     private _counter: Counter | null = null;
 
     protected renderElement(): HTMLElement {
-        console.info("Render hello-world");
         return (
             <div>
                 <div>Hello <span class="name" click={() => this.onClick()}><slot name="name"></slot></span>!</div>
