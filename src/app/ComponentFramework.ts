@@ -48,9 +48,9 @@ export function Component(name: string) {
 export abstract class ComponentBase extends HTMLElement {
     private _shadow: ShadowRoot;
     private _styleElement: HTMLStyleElement;
-    private _element: HTMLElement;
+    private _element: HTMLElement | null = null;
 
-    public get element(): HTMLElement {
+    public get element(): HTMLElement | null {
         return this._element;
     }
 
@@ -60,21 +60,30 @@ export abstract class ComponentBase extends HTMLElement {
         
         this._styleElement = document.createElement("style");
         this._shadow.appendChild(this._styleElement);
-        this._styleElement.innerHTML = this.renderStyle();
 
-        this._element = this.renderHTML();
-        this._shadow.appendChild(this._element);
+        this.render();
     }
 
-    // private connectedCallback(): void {
-        
-    // }
+    private connectedCallback(): void {
+        this.render();    
+    }
 
     // private disconnectedCallback(): void {
         
     // }
 
-    protected abstract renderStyle(): string;
+    protected render(): void {
+        this._styleElement.innerHTML = this.renderElementStyle();
 
-    protected abstract renderHTML(): HTMLElement;
+        if (this._element !== null) {
+            this._shadow.removeChild(this._element);
+        }
+
+        this._element = this.renderElement();
+        this._shadow.appendChild(this._element);
+    }
+
+    protected abstract renderElementStyle(): string;
+
+    protected abstract renderElement(): HTMLElement;
 }
