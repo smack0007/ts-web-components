@@ -1,4 +1,4 @@
-import { Component, ComponentBase } from "../Component.js";
+import { Component, ComponentBase, html } from "../ComponentFramework.js";
 
 @Component("hello-world")
 export class HelloWorld extends ComponentBase {   

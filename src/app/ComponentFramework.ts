@@ -9,15 +9,10 @@ declare global {
     }
 }
 
-export function Component(name: string) {
-    return function (target: CustomElementConstructor) {
-        customElements.define(name, target, { });
-    }
-}
-
 type HTMLAttributes = { [key: string ]: any };
 
-Component.html = function(tagName: string, attributes: HTMLAttributes | null, ...children: HTMLElement[]): HTMLElement {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function html(tagName: string, attributes: HTMLAttributes | null, ...children: HTMLElement[]): HTMLElement {
     const element = document.createElement(tagName);
     
     if (attributes !== null) {
@@ -42,6 +37,12 @@ Component.html = function(tagName: string, attributes: HTMLAttributes | null, ..
     }
 
     return element;
+}
+
+export function Component(name: string) {
+    return function (target: CustomElementConstructor): void {
+        customElements.define(name, target, { });
+    }
 }
 
 export abstract class ComponentBase extends HTMLElement {
