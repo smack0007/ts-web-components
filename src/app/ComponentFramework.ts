@@ -12,7 +12,7 @@ declare global {
 type HTMLAttributes = { [key: string ]: any };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function html(tagName: string, attributes: HTMLAttributes | null, ...children: HTMLElement[]): HTMLElement {
+export function html(tagName: string, attributes: HTMLAttributes | null, ...children: Array<HTMLElement | Array<HTMLElement>>): HTMLElement {
     const element = document.createElement(tagName);
     
     if (attributes !== null) {
@@ -32,11 +32,19 @@ export function html(tagName: string, attributes: HTMLAttributes | null, ...chil
         }
     }
     
-    for (const child of children) {
-        element.append(child);
-    }
+    htmlAddChildren(element, children);
 
     return element;
+}
+
+function htmlAddChildren(element: HTMLElement, children: Array<HTMLElement | Array<HTMLElement>>): void {
+    for (const child of children) {        
+        if (Array.isArray(child)) {
+            htmlAddChildren(element, child);
+        } else {
+            element.append(child);
+        }
+    }
 }
 
 export function Component(name: string) {
