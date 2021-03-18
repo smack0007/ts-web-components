@@ -45,6 +45,22 @@ export function Component(name: string) {
     }
 }
 
+const componentAttributeMapKey = "__attribtues";
+type ComponentAttributeMap = { [key: string]: string };
+
+export function ComponentAttribute(name: string) {
+    return function (target: unknown, propertyKey: string): void {        
+        let attributeMap: ComponentAttributeMap = ((target as any).constructor)[componentAttributeMapKey];
+
+        if (attributeMap === undefined) {
+            attributeMap = {};
+            ((target as any).constructor)[componentAttributeMapKey] = attributeMap;
+        }
+
+        attributeMap[propertyKey] = name;
+    }
+}
+
 const componentChildMapKey = "__children";
 type ComponentChildMap = { [key: string]: string };
 
@@ -65,6 +81,16 @@ export abstract class ComponentBase extends HTMLElement {
     private _shadow: ShadowRoot;
     private _styleElement: HTMLStyleElement;
     private _element: HTMLElement | null = null;
+
+    public static get observedAttributes(): Array<string> {
+        const attributeMap = (this as any)[componentAttributeMapKey];
+
+        if (attributeMap === undefined) {
+            return [];
+        }
+
+        return Object.values(attributeMap);
+    }
 
     public get element(): HTMLElement | null {
         return this._element;

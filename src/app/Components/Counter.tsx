@@ -1,13 +1,12 @@
-import { Component, ComponentBase, ComponentChild, html } from "../ComponentFramework.js";
+import { Component, ComponentAttribute, ComponentBase, ComponentChild, html } from "../ComponentFramework.js";
 
 @Component("app-counter")
 export class Counter extends ComponentBase {
-    public static get observedAttributes(): Array<string> {
-        return ["count"];
-    }
-
     @ComponentChild(".count")
     private _countElement: HTMLElement | null = null;
+
+    @ComponentAttribute("count")
+    private _count: number = 0;
 
     public get count(): number {
         const temp = this.getAttribute("count");
@@ -43,3 +42,5 @@ export class Counter extends ComponentBase {
         }
     }
 }
+
+console.dir(Counter);

@@ -3,9 +3,7 @@ import "./Counter.js";
 import { Counter } from "./Counter.js";
 
 @Component("app-hello-world")
-export class HelloWorld extends ComponentBase {   
-    private _clickCount: number = 0;
-    
+export class HelloWorld extends ComponentBase {       
     @ComponentChild("app-counter")
     private _counter: Counter | null = null;
 
@@ -13,7 +11,7 @@ export class HelloWorld extends ComponentBase {
         return (
             <div>
                 <div>Hello <span class="name" click={() => this.onClick()}><slot name="name"></slot></span>!</div>
-                <app-counter count={this._clickCount}></app-counter>
+                <app-counter count="0"></app-counter>
             </div>
         );
     }
