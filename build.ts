@@ -1,8 +1,7 @@
 #!/usr/bin/env ts-node
-import { join } from "path";
-import { chdir } from "process";
+import { chDir, join } from "./build/node";
 import * as app from "./src/app/build";
 
-chdir(join(__dirname));
+chDir(join(__dirname));
 
 app.build();

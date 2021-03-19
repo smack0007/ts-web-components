@@ -9,5 +9,5 @@
         "sourceMap": true,
         "outDir": "../../dist/app"
     },
-    "exclude": ["build.ts"]
+    "exclude": ["./build.ts"]
 }

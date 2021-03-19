@@ -6,5 +6,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "typeRoots": ["./node_modules/@types"]
-  }
+  },
+  "exclude": ["./build.ts"]
 }

@@ -7,7 +7,7 @@
     "clsbuild": "node -e console.clear() && npm run build",
     "lint": "eslint ./src/**/*.ts",
     "start": "http-server ./dist/app -a 127.0.0.1 -c-1",
-    "watch": "tsc -p ./src/app --watch"
+    "watch": "tsc -p ./src/app --pretty --watch"
   },
   "repository": {
     "type": "git",
