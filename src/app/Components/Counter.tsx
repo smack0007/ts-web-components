@@ -10,8 +10,6 @@ export class Counter extends ComponentBase {
 
     public get count(): number {
         const temp = this.getAttribute("count");
-        
-        console.info("count", temp);
 
         return +(temp as string);
     }
@@ -34,11 +32,9 @@ export class Counter extends ComponentBase {
         );
     }
 
-    private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
-        console.info("attributeChangedCallback", name, oldValue, newValue);
-        
+    protected onAttributeChanged(name: string, oldValue: string, newValue: string): void {
         if (this._countElement !== null) {
-            this._countElement.innerText = this.count.toString();
+            this._countElement.innerHTML = this._count.toString();
         }
     }
 }

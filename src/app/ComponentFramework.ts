@@ -65,7 +65,7 @@ export function ComponentAttribute(name: string) {
             ((target as any).constructor)[componentAttributeMapKey] = attributeMap;
         }
 
-        attributeMap[propertyKey] = name;
+        attributeMap[name] = propertyKey;
     }
 }
 
@@ -97,7 +97,7 @@ export abstract class ComponentBase extends HTMLElement {
             return [];
         }
 
-        return Object.values(attributeMap);
+        return Object.keys(attributeMap);
     }
 
     public get element(): HTMLElement | null {
@@ -120,7 +120,19 @@ export abstract class ComponentBase extends HTMLElement {
     // private disconnectedCallback(): void {
     // }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
+        console.info("attributeChangedCallback", name, oldValue, newValue);
+        
+        const attributeMap = ((this as any).constructor)[componentAttributeMapKey];
+
+        if (attributeMap !== undefined && attributeMap[name] !== undefined) {
+            (this as any)[attributeMap[name]] = newValue;
+        }
+
+        this.onAttributeChanged(name, oldValue, newValue);
+    }
+
+    
     protected onInit(): void {}
 
     protected render(): void {
@@ -145,4 +157,6 @@ export abstract class ComponentBase extends HTMLElement {
     protected abstract renderElementStyle(): string;
 
     protected abstract renderElement(): HTMLElement;
+
+    protected onAttributeChanged(name: string, oldValue: string, newValue: string): void {}
 }
