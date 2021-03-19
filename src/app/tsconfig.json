@@ -8,5 +8,6 @@
         "experimentalDecorators": true,
         "sourceMap": true,
         "outDir": "../../dist/app"
-    }
+    },
+    "exclude": ["build.ts"]
 }

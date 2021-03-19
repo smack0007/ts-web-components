@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "build",
+			"script": "clsbuild",
 			"group": {
 				"kind": "build",
 				"isDefault": true
