@@ -42,5 +42,3 @@ export class Counter extends ComponentBase {
         }
     }
 }
-
-console.dir(Counter);
